@@ -1,0 +1,52 @@
+name: "clip_text_ensemble"
+platform: "ensemble"
+input [
+  {
+    name: "text"
+    data_type: TYPE_STRING
+    dims: [ -1 ]  # 表示动态维度
+  }
+]
+output [
+  {
+    name: "text_embeddings"
+    data_type: TYPE_FP32
+    dims: [ 512 ]
+  }
+]
+ensemble_scheduling {
+  step [
+    {
+      model_name: "clip_text_preprocess"
+      model_version: -1
+      input_map {
+        key: "text"
+        value: "text"
+      }
+      output_map {
+        key: "input_ids"
+        value: "input_ids"
+      }
+      output_map {
+        key: "attention_mask"
+        value: "attention_mask"
+      }
+    },
+    {
+      model_name: "clip_text_onnx"
+      model_version: -1
+      input_map {
+        key: "input_ids"
+        value: "input_ids"
+      }
+      input_map {
+        key: "attention_mask"
+        value: "attention_mask"
+      }
+      output_map {
+        key: "text_embeddings"
+        value: "text_embeddings"
+      }
+    }
+  ]
+}

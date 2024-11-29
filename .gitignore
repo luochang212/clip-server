@@ -2,5 +2,10 @@
 .idea
 .vscode
 .ipynb_checkpoints
+
+*.pt
+*.onnx
+
 __pycache__
-model
+
+workspace

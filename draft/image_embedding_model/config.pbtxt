@@ -1,0 +1,21 @@
+name: "image_embedding_model"
+backend: "onnxruntime"
+max_batch_size: 64
+input [
+  {
+    name: "pixel_values"
+    data_type: TYPE_FP32
+    dims: [ 3, 224, 224 ]
+  }
+]
+output [
+  {
+    name: "image_features"
+    data_type: TYPE_FP32
+    dims: [50, 768]
+  }
+]
+dynamic_batching {
+  preferred_batch_size: [ 4, 8, 16, 32 ]
+  max_queue_delay_microseconds: 100
+}

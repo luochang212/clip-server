@@ -1,0 +1,44 @@
+name: "clip_image_ensemble"
+platform: "ensemble"
+input [
+  {
+    name: "base64_images"
+    data_type: TYPE_STRING
+    dims: [ -1 ]
+  }
+]
+output [
+  {
+    name: "image_embeddings"
+    data_type: TYPE_FP32
+    dims: [ 512 ]
+  }
+]
+ensemble_scheduling {
+  step [
+    {
+      model_name: "clip_image_preprocess"
+      model_version: -1
+      input_map {
+        key: "base64_images"
+        value: "base64_images"
+      }
+      output_map {
+        key: "pixel_values"
+        value: "pixel_values"
+      }
+    },
+    {
+      model_name: "clip_image_onnx"
+      model_version: -1
+      input_map {
+        key: "pixel_values"
+        value: "pixel_values"
+      }
+      output_map {
+        key: "image_embeddings"
+        value: "image_embeddings"
+      }
+    }
+  ]
+}

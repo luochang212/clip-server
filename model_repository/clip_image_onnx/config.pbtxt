@@ -1,0 +1,31 @@
+name: "clip_image_onnx"
+backend: "onnxruntime"
+max_batch_size: 128
+input [
+  {
+    name: "pixel_values"
+    data_type: TYPE_FP32
+    dims: [ 3, 224, 224 ]
+  }
+]
+output [
+  {
+    name: "image_embeddings"
+    data_type: TYPE_FP32
+    dims: [ 512 ]
+  }
+]
+instance_group [
+  {
+    count: 2
+    kind: KIND_CPU
+  },
+  {
+    count: 1
+    kind: KIND_GPU
+    gpus: [ 0 ]
+  }
+]
+dynamic_batching {
+    max_queue_delay_microseconds: 100
+}

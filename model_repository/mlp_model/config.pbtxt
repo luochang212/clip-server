@@ -1,0 +1,26 @@
+name: "mlp_model"
+backend: "onnxruntime"
+max_batch_size: 64
+input [
+  {
+    name: "x"
+    data_type: TYPE_FP32
+    dims: [ 7 ]
+  }
+]
+output [
+  {
+    name: "predict"
+    data_type: TYPE_FP32
+    dims: [ 2 ]
+  }
+]
+instance_group [
+  {
+    count: 1
+    kind: KIND_GPU
+  }
+]
+dynamic_batching {
+  max_queue_delay_microseconds: 100
+}

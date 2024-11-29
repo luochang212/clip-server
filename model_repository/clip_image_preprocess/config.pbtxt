@@ -1,0 +1,25 @@
+name: "clip_image_preprocess"
+backend: "python"
+input [
+  {
+    name: "base64_images"
+    data_type: TYPE_STRING
+    dims: [ -1 ]
+  }
+]
+output [
+  {
+    name: "pixel_values"
+    data_type: TYPE_FP32
+    dims: [ 3, 224, 224 ]
+  }
+]
+instance_group [
+  {
+    count: 2
+    kind: KIND_GPU
+  }
+]
+dynamic_batching {
+    max_queue_delay_microseconds: 100
+}
